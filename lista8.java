@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-
 class ArquivoTextoLeitura {
 
    private BufferedReader entrada;
@@ -44,7 +43,6 @@ class ArquivoTextoLeitura {
       }
    }
 }
-
 
 
 class Livro {
@@ -227,7 +225,8 @@ class Fila {
 
       totalElementos++;
       somaNota += livro.getNota_avaliacao();
-      MyIO.println(somaNota / totalElementos);
+      MyIO.println(obterSomaDaNotaMedia());
+      
 
    }
 
@@ -251,17 +250,17 @@ class Fila {
          return;
       }
 
-      int i = 0;
-      for (int tmp = inicio; tmp < totalElementos; tmp++) {
-
+      
+      for (int tmp = inicio, i = 0; tmp != fim; tmp = (tmp + 1) % fila.length, i++) {
          MyIO.print("[" + i + "] [" + fila[tmp].getCategoria() + "] [" + fila[tmp].getNota_avaliacao() + "] [" +
-               fila[tmp].getQuantidade_avaliacoes() + "] [" + fila[tmp].getAutor_principal() + "], ["
-               + fila[tmp].getSegundo_autor() + "]. [" + fila[tmp].getTitulo() + "[" + fila[tmp].getAno_publicacao() +
-               "]. ISBN:[" + fila[tmp].getISBN() + "]");
-         i++;
+            fila[tmp].getQuantidade_avaliacoes() + "] [" + fila[tmp].getAutor_principal() + "], [" + 
+            fila[tmp].getSegundo_autor() + "]. [" + fila[tmp].getTitulo() + "[" + fila[tmp].getAno_publicacao() +
+            "]. ISBN:[" + fila[tmp].getISBN() + "]");
+      }
+      
 
       }
-   }
+   
 
    public int getSomaMedia() {
       return (int) Math.round(somaNota);
@@ -269,6 +268,10 @@ class Fila {
 
    public int getQtdElementos() {
       return totalElementos;
+   }
+
+   double obterSomaDaNotaMedia (){
+      return somaNota/totalElementos;
    }
 
 }
@@ -291,15 +294,15 @@ class lista8 {
       String linha;
 
       // contar
-      ArquivoTextoLeitura txt_1 = new ArquivoTextoLeitura("jogos.txt");
+      ArquivoTextoLeitura txt_1 = new ArquivoTextoLeitura("/tmp/livros.txt");
       int qtdLivro = 0;
       do {
          linha = txt_1.ler();
          qtdLivro++;
       } while (linha != null);
 
-      txt_1.fecharArquivo();
-      ArquivoTextoLeitura txt_2 = new ArquivoTextoLeitura("jogos.txt");
+      
+      ArquivoTextoLeitura txt_2 = new ArquivoTextoLeitura("/tmp/livros.txt");
 
       // preencher
       Livro livrosTxt[] = new Livro[qtdLivro];
@@ -311,52 +314,51 @@ class lista8 {
          livrosTxt[i] = livro;
       }
 
-      txt_2.fecharArquivo();
 
-      // // fila
-      // Fila fila = new Fila(100);
+      // fila
+      Fila fila = new Fila(100);
 
-      // // prencher pubin
-      // linha = MyIO.readLine();
+      // prencher pubin
+      linha = MyIO.readLine();
 
-      // while (linha != "FIM") {
+      while(linha.equals("FIM")){
 
-      //    Livro livro = new Livro();
-      //    livro.ler2(linha);
+         Livro livro = new Livro();
+         livro.ler2(linha);
 
-      //    acharLivro(livro, livrosTxt, fila);
+         acharLivro(livro, livrosTxt, fila);
 
-      //    linha = MyIO.readLine();
-      // }
+         linha = MyIO.readLine();
+      }
 
-      // int operacoes = MyIO.readInt();
+      int operacoes = MyIO.readInt();
 
-      // for (int i = 0; i < operacoes; i++) {
-      //    linha = MyIO.readLine();
+      for (int i = 0; i < operacoes; i++) {
+         linha = MyIO.readLine();
 
-      //    String[] dados = linha.split(" ");
+         String[] dados = linha.split(" ");
 
-      //    // desenfileirar
-      //    if (dados[0].equals("D")) {
-      //       Livro livro = fila.desenfileirar();
+         // desenfileirar
+         if (dados[0].equals("D")) {
+            Livro livro = fila.desenfileirar();
 
-      //       MyIO.println("(D) [" + livro.getCategoria() + "] [" + livro.getNota_avaliacao() + "] [" +
-      //             livro.getQuantidade_avaliacoes() + "] [" + livro.getAutor_principal() + "], ["
-      //             + livro.getSegundo_autor() + "]. ["
-      //             + livro.getTitulo() + "]. [" + livro.getAno_publicacao() + " ]. ISBN:[" + livro.getISBN() + "].");
+            MyIO.println("(D) [" + livro.getCategoria() + "] [" + livro.getNota_avaliacao() + "] [" +
+                  livro.getQuantidade_avaliacoes() + "] [" + livro.getAutor_principal() + "], ["
+                  + livro.getSegundo_autor() + "]. ["
+                  + livro.getTitulo() + "]. [" + livro.getAno_publicacao() + " ]. ISBN:[" + livro.getISBN() + "].");
 
-      //    }
+         }
 
-      //    // enfileirar
-      //    else if (dados[0].equals("E")) {
+         // enfileirar
+         else if (dados[0].equals("E")) {
 
-      //       Livro livro = new Livro();
-      //       livro.ler2(dados[1]);
+            Livro livro = new Livro();
+            livro.ler2(dados[1]);
 
-      //       acharLivro(livro, livrosTxt, fila);
+            acharLivro(livro, livrosTxt, fila);
 
-      //    }
-      // }
+         }
+      }
 
    }
 
