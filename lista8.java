@@ -185,13 +185,6 @@ class Livro {
         this.setQuantidade_avaliacoes(Integer.parseInt(info[9]));
     }
 
-    void ler2(String linha) {
-        String[] info = linha.split(";");
-        this.setTitulo(info[0]);
-        this.setAno_publicacao(Integer.parseInt(info[1]));
-        this.setAutor_principal(info[2]);
-    }
-
 }
 
 class Fila {
@@ -212,7 +205,7 @@ class Fila {
 
     public void enfileirar(Livro livro) {
         if ((fim + 1) % fila.length == inicio) {
-            throw new RuntimeException("Fila cheia");
+            desenfileirar();
         }
         fila[fim] = livro;
         fim = (fim + 1) % fila.length;
@@ -239,7 +232,7 @@ class Fila {
             return;
         }
         for (int tmp = inicio, i = 0; tmp != fim; tmp = (tmp + 1) % fila.length, i++) {
-            MyIO.print("[" + i + "] [" + fila[tmp].getCategoria() + "] [" + fila[tmp].getNota_avaliacao() + "] ["
+            MyIO.println("[" + i + "] [" + fila[tmp].getCategoria() + "] [" + fila[tmp].getNota_avaliacao() + "] ["
                     + fila[tmp].getQuantidade_avaliacoes() + "] [" + fila[tmp].getAutor_principal() + "], ["
                     + fila[tmp].getSegundo_autor() + "]. [" + fila[tmp].getTitulo() + " [" + fila[tmp].getAno_publicacao()
                     + "]. ISBN:[" + fila[tmp].getISBN() + "]");
@@ -261,11 +254,14 @@ class Fila {
 
 class lista8 {
 
-    static void acharLivro(Livro livro, Livro[] livros, Fila fila) {
+    static void acharLivro(String linha, Livro[] livros, Fila fila) {
+
+        String[] info = linha.split(";");
+
         for (int i = 0; i < livros.length; i++) {
-            if (livros[i].getTitulo().equals(livro.getTitulo())
-                    && livros[i].getAno_publicacao() == livro.getAno_publicacao()
-                    && livros[i].getAutor_principal().equals(livro.getAutor_principal())) {
+            if (livros[i].getTitulo().equals(info[0])  &&
+             livros[i].getAno_publicacao() == Integer.parseInt(info[1]) &&
+              livros[i].getAutor_principal().equals(info[2]) ){
                 fila.enfileirar(livros[i]);
             }
         }
@@ -283,7 +279,7 @@ class lista8 {
                 qtdLivro++;
             }
         } while (linha != null);
-        txt_1.fecharArquivo(); // Fechar após contar
+        
 
         ArquivoTextoLeitura txt_2 = new ArquivoTextoLeitura("livros.txt");
 
@@ -305,9 +301,7 @@ class lista8 {
         linha = MyIO.readLine();
 
         while (!linha.equals("FIM")) {
-            Livro livro = new Livro();
-            livro.ler2(linha);
-            acharLivro(livro, livrosTxt, fila);
+            acharLivro(linha, livrosTxt, fila);
             linha = MyIO.readLine();
         }
 
@@ -333,9 +327,8 @@ for (int j = 0; j < operacoes; j++) {
 
     
     if (dados[0].equals("E")) {
-        Livro livro = new Livro();
-        livro.ler2(dados[1]);
-        acharLivro(livro, livrosTxt, fila);
+        
+        acharLivro(dados[1], livrosTxt, fila);
     }
 }
 
