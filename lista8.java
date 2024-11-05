@@ -232,10 +232,18 @@ class Fila {
             return;
         }
         for (int tmp = inicio, i = 0; tmp != fim; tmp = (tmp + 1) % fila.length, i++) {
+
+            if(fila[tmp].getSegundo_autor().equals(" ")){
             MyIO.println("[" + i + "] [" + fila[tmp].getCategoria() + "] [" + fila[tmp].getNota_avaliacao() + "] ["
-                    + fila[tmp].getQuantidade_avaliacoes() + "] [" + fila[tmp].getAutor_principal() + "], ["
-                    + fila[tmp].getSegundo_autor() + "]. [" + fila[tmp].getTitulo() + " [" + fila[tmp].getAno_publicacao()
-                    + "]. ISBN:[" + fila[tmp].getISBN() + "]");
+                + fila[tmp].getQuantidade_avaliacoes() + "] " + fila[tmp].getAutor_principal() +  ". "
+                + fila[tmp].getSegundo_autor() + ". " + fila[tmp].getTitulo() + ". " + fila[tmp].getAno_publicacao()
+                + ". ISBN:" + fila[tmp].getISBN());
+            }
+            else{
+                MyIO.println("[" + i + "] [" + fila[tmp].getCategoria() + "] [" + fila[tmp].getNota_avaliacao() + "] ["
+                + fila[tmp].getQuantidade_avaliacoes() + "] " + fila[tmp].getAutor_principal() + ". " + fila[tmp].getTitulo() + ". " + fila[tmp].getAno_publicacao()
+                + ". ISBN:" + fila[tmp].getISBN());
+            }
         }
     }
 
@@ -247,9 +255,6 @@ class Fila {
         return totalElementos;
     }
 
-    double obterSomaDaNotaMedia() {
-        return totalElementos > 0 ? somaNota / totalElementos : 0.0;
-    }
 }
 
 class lista8 {
