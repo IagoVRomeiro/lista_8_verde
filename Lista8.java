@@ -178,13 +178,13 @@ class Fila {
      Livro[] livros;
     int inicio;
     int fim;
-     double somaNota;
+     float somaNota;
 
     Fila(int capacidade) {
         livros = new Livro[capacidade + 1];
         inicio = 0;
         fim = 0;
-        somaNota = 0.0;
+
     }
 
     void enfileirar(Livro livro) {
@@ -194,15 +194,16 @@ class Fila {
         livros[fim] = livro;
         fim = (fim + 1) % livros.length;
 
-      
-       
     }
-    int obterSomaDaNotasMedia(){
-        for (Livro livro : livros){
-            somaNota += livro.getNota_avaliacao();
-        } 
-        return (int)Math.round(somaNota);
+    
+    int obterSomaDaNotasMedia() {
+        somaNota = 0; 
+        for (int i = inicio; i != fim; i = (i + 1) % livros.length) {
+            somaNota += livros[i].getNota_avaliacao();
+        }
+        return Math.round(somaNota);
     }
+    
     
     Livro desenfileirar() {
         if (inicio == fim) {
